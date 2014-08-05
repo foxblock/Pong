@@ -14,7 +14,6 @@ class ClassicBall : public Projectile
 		~ClassicBall();
 
 		virtual void Update();
-		virtual void Render();
 		virtual void OnCollision( Player* WithPlayer );
 		//virtual void OnCollisionPlayersWall( Player* WithPlayer ); // Not needed
 

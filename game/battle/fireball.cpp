@@ -7,6 +7,7 @@
 FireBall::FireBall( Arena* PlayArena, Vector2* StartPosition, Angle* StartDirection, float StartSpeed ) : ClassicBall(PlayArena, StartPosition, StartDirection, StartSpeed)
 {
 	//ParticleDelay = 0;
+	Colour = al_map_rgb( 255, 220, 128 );
 }
 
 
@@ -20,11 +21,6 @@ void FireBall::Update()
 		Particle* p = new Particle( al_map_rgb( 192, 160, 64 ), 20, currentArena, new Vector2(Position), new Angle( Direction->ToDegrees() + 180.0f + (rand() % 61) - 31 ), Speed / 2.5f );
 		((BattleStage*)currentArena)->AddObject( p );
 	//}
-}
-
-void FireBall::Render()
-{
-	al_draw_filled_rectangle( Position->X - Radius, Position->Y - Radius, Position->X + Radius, Position->Y + Radius, al_map_rgb( 255, 220, 128 ) );
 }
 
 void FireBall::OnCollision( Player* WithPlayer )

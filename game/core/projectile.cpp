@@ -8,6 +8,7 @@ Projectile::Projectile(Arena* PlayArena, Vector2* StartPosition, Angle* StartDir
 	Direction = StartDirection;
 	Speed = StartSpeed;
 	Radius = 1;
+	Colour = al_map_rgb( 255, 255, 255 );
 }
 
 Projectile::~Projectile()
@@ -35,8 +36,17 @@ void Projectile::Update()
 
 void Projectile::Render()
 {
-	al_draw_filled_ellipse( Position->X, Position->Y, Radius, Radius, al_map_rgb( 128, 128, 128 ) );
+	al_draw_filled_rectangle( Position->X - Radius, Position->Y - Radius, Position->X + Radius, Position->Y + Radius, Colour );
 }
+
+void Projectile::RenderTrace()
+{
+	for (std::vector<Vector2*>::const_iterator I = Waypoints.begin(); I != Waypoints.end(); ++I)
+	{
+		//
+	}
+}
+
 
 void Projectile::OnCollision( Player* WithPlayer )
 {
@@ -45,3 +55,16 @@ void Projectile::OnCollision( Player* WithPlayer )
 void Projectile::OnCollisionPlayersWall( Player* WithPlayer )
 {
 }
+
+void Projectile::AddWaypoint()
+{
+	Waypoints.push_back(new Vector2(Position));
+}
+
+void Projectile::ResetWaypoints()
+{
+	for (std::vector<Vector2*>::iterator I = Waypoints.begin(); I != Waypoints.end(); ++I)
+		delete *I;
+	Waypoints.clear();
+}
+

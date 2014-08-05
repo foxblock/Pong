@@ -20,7 +20,6 @@ class HomingFireBall : public ClassicBall
 		HomingFireBall( Player* TargetPlayer, Arena* PlayArena, Vector2* StartPosition, Angle* StartDirection, float StartSpeed );
 
 		virtual void Update();
-		virtual void Render();
 		virtual void OnCollision( Player* WithPlayer );
 		virtual void OnCollisionPlayersWall( Player* WithPlayer );
 

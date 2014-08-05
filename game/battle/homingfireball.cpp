@@ -7,6 +7,7 @@ HomingFireBall::HomingFireBall( Player* TargetPlayer, Arena* PlayArena, Vector2*
 {
 	target = TargetPlayer;
 	targetUpdateDelay = 0;
+	Colour = al_map_rgb( 220, 128, 255 );
 }
 
 void HomingFireBall::Update()
@@ -35,11 +36,6 @@ void HomingFireBall::Update()
 		delete targetDirection;
 		targetUpdateDelay = 0;
 	}
-}
-
-void HomingFireBall::Render()
-{
-	al_draw_filled_rectangle( Position->X - Radius, Position->Y - Radius, Position->X + Radius, Position->Y + Radius, al_map_rgb( 220, 128, 255 ) );
 }
 
 void HomingFireBall::OnCollision( Player* WithPlayer )

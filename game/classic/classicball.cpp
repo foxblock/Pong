@@ -28,11 +28,6 @@ void ClassicBall::Update()
 	}
 }
 
-void ClassicBall::Render()
-{
-	al_draw_filled_rectangle( Position->X - Radius, Position->Y - Radius, Position->X + Radius, Position->Y + Radius, al_map_rgb( 255, 255, 255 ) );
-}
-
 void ClassicBall::OnCollision( Player* WithPlayer )
 {
 	if( WithPlayer->DownPressed && !WithPlayer->UpPressed )

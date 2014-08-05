@@ -7,6 +7,7 @@
 FreezeBall::FreezeBall( Arena* PlayArena, Vector2* StartPosition, Angle* StartDirection, float StartSpeed ) : ClassicBall(PlayArena, StartPosition, StartDirection, StartSpeed)
 {
 	ParticleDelay = 0;
+	Colour = al_map_rgb( 128, 192, 255 );
 }
 
 
@@ -24,11 +25,6 @@ void FreezeBall::Update()
 		p = new Particle( al_map_rgb( 64, 160, 192 ), 20, currentArena, new Vector2(Position), new Angle( Direction->ToDegrees() + 180.0f - ax ), Speed / sx );
 		((BattleStage*)currentArena)->AddObject( p );
 	}
-}
-
-void FreezeBall::Render()
-{
-	al_draw_filled_rectangle( Position->X - Radius, Position->Y - Radius, Position->X + Radius, Position->Y + Radius, al_map_rgb( 128, 192, 255 ) );
 }
 
 void FreezeBall::OnCollision( Player* WithPlayer )
