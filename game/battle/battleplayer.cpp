@@ -14,7 +14,7 @@
 #define SIZING_MIN       64
 #define SIZING_STEP      32
 #define REVERSE_TIME     4 * FRAMES_PER_SECOND
-#define PLAYER_HEALTH    10
+#define PLAYER_HEALTH    100
 #define DAMAGE_BALL_MISS 2
 #define DAMAGE_BURN      2
 

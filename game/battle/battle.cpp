@@ -43,7 +43,9 @@ BattleStage::BattleStage()
 	labelFont = al_load_font( GAME_FONT, LABEL_FONT_SIZE, 0 );
 	backgroundImage = al_load_bitmap( "resources/background.png" );
 	inventoryIcons = new SpriteSheet( "resources/inventory.png", INVENTORY_ITEM_SIZE, INVENTORY_ITEM_SIZE );
-	GameObjects.push_back( new BattleBall( this, new Vector2( FRAMEWORK->Display_GetWidth() / 2, FRAMEWORK->Display_GetHeight() / 2 ), new Angle( rand() % 360 ), 3.0f ) );
+	BattleBall *ball = new BattleBall( this, new Vector2( FRAMEWORK->Display_GetWidth() / 2, FRAMEWORK->Display_GetHeight() / 2 ), new Angle( rand() % 360 ), 3.0f );
+	ball->AddWaypoint();
+	GameObjects.push_back( ball );
 	LeftPlayer = (Player*)(new BattlePlayer( this, new Vector2( PLAYER_LEFT_X, FRAMEWORK->Display_GetHeight() / 2 ), MAIN_POS_Y, MAIN_POS_Y + MAIN_HEIGHT ));
 	RightPlayer = (Player*)(new BattlePlayer( this, new Vector2( PLAYER_RIGHT_X, FRAMEWORK->Display_GetHeight() / 2 ), MAIN_POS_Y, MAIN_POS_Y + MAIN_HEIGHT ));
 
@@ -211,11 +213,14 @@ void BattleStage::Render()
 		p->Render();
 	}
 
+	al_set_clipping_rectangle( MAIN_POS_X, MAIN_POS_Y, MAIN_WIDTH, MAIN_HEIGHT );
 	for( std::list<Projectile*>::const_reverse_iterator i = GameObjects.rbegin(); i != GameObjects.rend(); i++ )
 	{
 		Projectile* p = (*i);
+		p->RenderTrace();
 		p->Render();
 	}
+	al_reset_clipping_rectangle();
 	LeftPlayer->Render();
 	RightPlayer->Render();
 
@@ -309,6 +314,7 @@ void BattleStage::ProcessProjectileCollisions( Projectile* Source, Vector2* Targ
 		angV->X *= -1;
 		collisionFound = true;
 		Source->OnCollisionPlayersWall( LeftPlayer );
+		Source->AddWaypoint();
 	}
 	if( TargetPosition->X > MAIN_POS_X + MAIN_WIDTH - Source->Radius )
 	{
@@ -316,6 +322,7 @@ void BattleStage::ProcessProjectileCollisions( Projectile* Source, Vector2* Targ
 		angV->X *= -1;
 		collisionFound = true;
 		Source->OnCollisionPlayersWall( RightPlayer );
+		Source->AddWaypoint();
 	}
 
 	if( TargetPosition->Y - MAIN_POS_Y < Source->Radius )
@@ -323,12 +330,14 @@ void BattleStage::ProcessProjectileCollisions( Projectile* Source, Vector2* Targ
 		TargetPosition->Y = Maths::Abs(TargetPosition->Y - MAIN_POS_Y - Source->Radius) + Source->Radius + MAIN_POS_Y;
 		angV->Y *= -1;
 		collisionFound = true;
+		Source->AddWaypoint();
 	}
 	if( TargetPosition->Y > MAIN_POS_Y + MAIN_HEIGHT - Source->Radius )
 	{
 		TargetPosition->Y = (MAIN_POS_Y + MAIN_HEIGHT - Source->Radius) - (TargetPosition->Y - (MAIN_POS_Y + MAIN_HEIGHT - Source->Radius));
 		angV->Y *= -1;
 		collisionFound = true;
+		Source->AddWaypoint();
 	}
 
 	Box* ballBounds = new Box( TargetPosition->X - Source->Radius, TargetPosition->Y - Source->Radius, Source->Radius * 2, Source->Radius * 2 );
@@ -340,6 +349,7 @@ void BattleStage::ProcessProjectileCollisions( Projectile* Source, Vector2* Targ
 			angV->X *= -1;
 			collisionFound = true;
 			Source->OnCollision( LeftPlayer );
+			Source->AddWaypoint();
 		}
 		delete leftPlyBounds;
 	}
@@ -351,6 +361,7 @@ void BattleStage::ProcessProjectileCollisions( Projectile* Source, Vector2* Targ
 			angV->X *= -1;
 			collisionFound = true;
 			Source->OnCollision( RightPlayer );
+			Source->AddWaypoint();
 		}
 		delete rightPlyBounds;
 	}

@@ -41,9 +41,32 @@ void Projectile::Render()
 
 void Projectile::RenderTrace()
 {
-	for (std::vector<Vector2*>::const_iterator I = Waypoints.begin(); I != Waypoints.end(); ++I)
+	if (!Waypoints.empty())
 	{
-		//
+		ALLEGRO_COLOR col = Colour;
+		col.a *= 0.5;
+
+		// go through past waypoints (every point where the direction changed)
+		// and connect these with a line
+		for (std::vector<Vector2*>::const_reverse_iterator I = Waypoints.rbegin(); I != Waypoints.rend(); ++I)
+		{
+			Vector2 *target, *temp;
+			if (I == Waypoints.rbegin())
+				target = Position;
+			else
+				target = *(I-1);
+
+			// calculate thickness of the line by calculating the slope between the points
+			// There might be a better way to do this...
+			temp = new Vector2( target );
+			temp->Subtract( *I );
+			Angle *angle = temp->ToAngle();
+			float thickness = fabs( 2 * Radius * angle->Sine() ) + fabs( 2 * Radius * angle->Cosine() );
+			float val = 0; //sqrt( 2.0f * Radius * Radius );
+			al_draw_line( (*I)->X - val * angle->Sine(), (*I)->Y - val * angle->Cosine(), target->X + val * angle->Sine(), target->Y + val * angle->Cosine(), col, thickness );
+			delete angle;
+			delete temp;
+		}
 	}
 }
 
