@@ -8,11 +8,21 @@
 #include "sendball.h"
 #include "../../framework/framework.h"
 
+#define FREEZE_TIME      4 * FRAMES_PER_SECOND
+#define SIZING_DELAY     10
+#define SIZING_MAX       192
+#define SIZING_MIN       64
+#define SIZING_STEP      32
+#define REVERSE_TIME     4 * FRAMES_PER_SECOND
+#define PLAYER_HEALTH    10
+#define DAMAGE_BALL_MISS 2
+#define DAMAGE_BURN      2
+
 BattlePlayer::BattlePlayer( Arena* PlayArena, Vector2* StartPosition, int MinimumY, int MaximumY ) : Player( PlayArena, StartPosition, MinimumY, MaximumY )
 {
 	currentArena = (BattleStage*)PlayArena;
-	MaxHealth = 10;
-	TargetHealth = 10;
+	MaxHealth = PLAYER_HEALTH;
+	TargetHealth = PLAYER_HEALTH;
 	Health = 0.1f;
 	TargetSize = Size;
 	SizeDelay = 0;
@@ -165,9 +175,15 @@ void BattlePlayer::Burn()
 		FreezeTime = 0;
 		setFreezeColour();
 	} else {
-		TakeDamage( 2 );
+		TakeDamage( DAMAGE_BURN );
 	}
 }
+
+void BattlePlayer::MissBall()
+{
+	TakeDamage( DAMAGE_BALL_MISS );
+}
+
 
 void BattlePlayer::TakeDamage( int Amount )
 {

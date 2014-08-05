@@ -16,7 +16,7 @@ Framework::Framework()
 		quitProgram = true;
 		return;
 	}
-	
+
 	al_init_font_addon();
 	if( !al_install_keyboard() || !al_install_mouse() || !al_init_primitives_addon() || !al_init_ttf_addon() || !al_init_image_addon() )
 	{
@@ -38,9 +38,9 @@ Framework::Framework()
 	printf( "Framework: Startup: Variables and Config\n" );
 #endif
 	quitProgram = false;
-  ProgramStages = new StageStack();
-  framesToProcess = 0;
-  Settings = new ConfigFile( "settings.cfg" );
+	ProgramStages = new StageStack();
+	framesToProcess = 0;
+	Settings = new ConfigFile( "settings.cfg" );
 
 	eventAllegro = al_create_event_queue();
 	eventMutex = al_create_mutex();
@@ -81,7 +81,7 @@ Framework::~Framework()
 	al_destroy_event_queue( eventAllegro );
 	al_destroy_mutex( eventMutex );
 	al_destroy_timer( frameTimer );
-	
+
 #ifdef NETWORK_SUPPORT
 #ifdef WRITE_LOG
   printf( "Framework: Shutdown enet\n" );

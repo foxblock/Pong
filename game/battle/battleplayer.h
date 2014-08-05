@@ -7,13 +7,6 @@
 class BattleStage;
 #endif
 
-#define FREEZE_TIME		4 * FRAMES_PER_SECOND
-#define SIZING_DELAY	10
-#define SIZING_MAX		192
-#define SIZING_MIN		64
-#define SIZING_STEP		32
-#define REVERSE_TIME	4 * FRAMES_PER_SECOND
-
 // *******************
 // Player (paddle) for battle mode
 // Also defines inventory item types (pickups)
@@ -74,6 +67,7 @@ class BattlePlayer : private Player
 
 		void Freeze();
 		void Burn();
+		void MissBall();
 		void TakeDamage( int Amount );
 		void UseInventory( int Slot );
 		void SendInventory( int Slot );

@@ -15,6 +15,6 @@ void BattleBall::OnCollision( Player* WithPlayer )
 
 void BattleBall::OnCollisionPlayersWall( Player* WithPlayer )
 {
-	((BattlePlayer*)WithPlayer)->TakeDamage( 2 );
+	((BattlePlayer*)WithPlayer)->MissBall();
 }
 
