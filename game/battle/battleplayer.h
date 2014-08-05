@@ -68,6 +68,7 @@ class BattlePlayer : private Player
 		void Freeze();
 		void Burn();
 		void MissBall();
+		void Homing();
 		void TakeDamage( int Amount );
 		void UseInventory( int Slot );
 		void SendInventory( int Slot );

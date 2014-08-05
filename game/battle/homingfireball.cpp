@@ -44,14 +44,7 @@ void HomingFireBall::Render()
 
 void HomingFireBall::OnCollision( Player* WithPlayer )
 {
-	BattlePlayer* ply = (BattlePlayer*)WithPlayer;
-	if( ply->FreezeLevel > 0 )
-	{
-		ply->FreezeLevel--;
-		ply->FreezeTime = 0;
-	} else {
-		ply->TakeDamage( 1 );
-	}
+	((BattlePlayer*)WithPlayer)->Homing();
 	((BattleStage*)currentArena)->RemoveObject( this );
 }
 

@@ -17,6 +17,7 @@
 #define PLAYER_HEALTH    10
 #define DAMAGE_BALL_MISS 2
 #define DAMAGE_BURN      2
+#define DAMAGE_HOMING    1
 
 BattlePlayer::BattlePlayer( Arena* PlayArena, Vector2* StartPosition, int MinimumY, int MaximumY ) : Player( PlayArena, StartPosition, MinimumY, MaximumY )
 {
@@ -168,7 +169,6 @@ void BattlePlayer::Freeze()
 
 void BattlePlayer::Burn()
 {
-	drawColour = al_map_rgb( 255, 220, 128 );
 	if( FreezeLevel > 0 )
 	{
 		FreezeLevel--;
@@ -184,6 +184,17 @@ void BattlePlayer::MissBall()
 	TakeDamage( DAMAGE_BALL_MISS );
 }
 
+void BattlePlayer::Homing()
+{
+	if( FreezeLevel > 0 )
+	{
+		FreezeLevel--;
+		FreezeTime = 0;
+		setFreezeColour();
+	} else {
+		TakeDamage( DAMAGE_HOMING );
+	}
+}
 
 void BattlePlayer::TakeDamage( int Amount )
 {
