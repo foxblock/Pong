@@ -1,6 +1,8 @@
 
 #include "projectile.h"
 
+#define MAX_TRAIL_DISTANCE 1000.0f
+
 Projectile::Projectile(Arena* PlayArena, Vector2* StartPosition, Angle* StartDirection, float StartSpeed)
 {
 	currentArena = PlayArena;
@@ -48,8 +50,11 @@ void Projectile::RenderTrace()
 
 		// go through past waypoints (every point where the direction changed)
 		// and connect these with a line
+		float dist = 0.0f;
 		for (std::vector<Vector2*>::const_reverse_iterator I = Waypoints.rbegin(); I != Waypoints.rend(); ++I)
 		{
+			if (dist > MAX_TRAIL_DISTANCE)
+				break;
 			Vector2 *target, *temp;
 			if (I == Waypoints.rbegin())
 				target = Position;
@@ -62,8 +67,15 @@ void Projectile::RenderTrace()
 			temp->Subtract( *I );
 			Angle *angle = temp->ToAngle();
 			float thickness = fabs( 2 * Radius * angle->Sine() ) + fabs( 2 * Radius * angle->Cosine() );
-			float val = 0; //sqrt( 2.0f * Radius * Radius );
-			al_draw_line( (*I)->X - val * angle->Sine(), (*I)->Y - val * angle->Cosine(), target->X + val * angle->Sine(), target->Y + val * angle->Cosine(), col, thickness );
+			float val = 0;//sqrt( 2.0f * Radius * Radius );
+			float distAdd = sqrt( temp->X * temp->X + temp->Y * temp->Y );
+			if (dist + distAdd > MAX_TRAIL_DISTANCE)
+			{
+				temp->Normalise();
+				temp->Multiply(MAX_TRAIL_DISTANCE - dist);
+			}
+			dist += distAdd;
+			al_draw_line( target->X - temp->X - val * angle->Sine(), target->Y - temp->Y - val * angle->Cosine(), target->X + val * angle->Sine(), target->Y + val * angle->Cosine(), col, thickness );
 			delete angle;
 			delete temp;
 		}

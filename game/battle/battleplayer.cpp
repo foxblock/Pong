@@ -226,6 +226,7 @@ void BattlePlayer::UseInventory( int Slot )
 			delete b->Direction;
 			b->Direction = v->ToAngle();
 			delete v;
+			b->AddWaypoint();
 			break;
 		case BattleInventory::INVENTORY_REVERSE_BALL_HORZ:
 			b = currentArena->GetBall();
@@ -234,6 +235,7 @@ void BattlePlayer::UseInventory( int Slot )
 			delete b->Direction;
 			b->Direction = v->ToAngle();
 			delete v;
+			b->AddWaypoint();
 			break;
 		case BattleInventory::INVENTORY_PADDLE_INCREASE:
 			TargetSize += SIZING_STEP;
